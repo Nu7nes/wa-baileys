@@ -5,15 +5,13 @@ class N8NService {
   private static url_test = process.env.N8N_WEBHOOK_UR_TEST;
 
   public static async sendWebhook(data: any) {
-    try {
-      const response = await axios.post(this.url!, data);
-      console.log("Webhook enviado com sucesso:", response.data);
-    } catch (error) {
-      console.error("Erro ao enviar webhook:", error);
+    const response = await axios.post(this.url!, data);
+    if (response.status !== 200) {
+      console.error("Erro ao enviar webhook:", response.statusText);
       await this.sendWebhookTest(data);
     }
   }
-  public static async sendWebhookTest(data: any) {
+  private static async sendWebhookTest(data: any) {
     try {
       const response = await axios.post(this.url_test!, data);
       console.log("Webhook enviado com sucesso:", response.data);
