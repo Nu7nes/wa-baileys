@@ -11,8 +11,8 @@ services:
     #   - postgres
     environment:
       - POSTGRES_DB=nunes
-      - POSTGRES_USER=admin
-      - POSTGRES_PASSWORD=Bnunes@123
+      - POSTGRES_USER=n8n
+      - POSTGRES_PASSWORD=n8n123
       - POSTGRES_HOST=postgres
       - POSTGRES_PORT=5432
       - POSTGRES_WA_TABLE=wa_auth_state
