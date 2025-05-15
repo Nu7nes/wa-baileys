@@ -16,8 +16,8 @@ services:
       - POSTGRES_HOST=postgres
       - POSTGRES_PORT=5432
       - POSTGRES_WA_TABLE=wa_auth_state
-      - N8N_WEBHOOK_UR=http://localhost:5678/webhook-test/wpp-message
-      - N8N_WEBHOOK_URL_TEST=http://localhost:5678/webhook/wpp-message
+      - N8N_WEBHOOK_UR=http://n8n:5678/webhook-test/wpp-message
+      - N8N_WEBHOOK_URL_TEST=http://n8n:5678/webhook/wpp-message
     networks:
       - n8n-stack_default
     restart: unless-stopped
