@@ -12,6 +12,7 @@ import P from "pino";
 import NodeCache from "node-cache";
 import { Boom } from "@hapi/boom";
 import { WACustonAuthState } from "../utils/WACustomAuthState";
+import QRCode from "qrcode";
 
 class BaileysService {
   private static instance: BaileysService;
@@ -19,13 +20,14 @@ class BaileysService {
   private groupCache = new NodeCache({ stdTTL: 5 * 60, useClones: false });
   private isSocketConnected: boolean = false;
   private onMessageReceived?: (data: any) => void;
+  public qrImageData: string | null = null;
 
   private constructor() {}
 
-  public static getInstance(): BaileysService {
+  public static async getInstance(): Promise<BaileysService> {
     if (!BaileysService.instance) {
       BaileysService.instance = new BaileysService();
-      BaileysService.instance.initialize();
+      await BaileysService.instance.initialize();
     }
     return BaileysService.instance;
   }
@@ -68,7 +70,7 @@ class BaileysService {
     this.sock = makeWASocket({
       version,
       logger,
-      printQRInTerminal: true,
+      printQRInTerminal: false,
       browser: Browsers.windows("AiHouse"),
       auth: {
         creds: state.creds,
@@ -83,7 +85,7 @@ class BaileysService {
 
     this.sock.ev.on(
       "connection.update",
-      async ({ connection, lastDisconnect }) => {
+      async ({ connection, lastDisconnect, qr }) => {
         if (connection === "close") {
           this.isSocketConnected = false;
           const statusCode = (lastDisconnect?.error as Boom)?.output
@@ -100,6 +102,10 @@ class BaileysService {
         } else if (connection === "open") {
           this.isSocketConnected = true;
           console.log("Conectado com sucesso!");
+        }
+
+        if (qr) {
+          this.qrImageData = await QRCode.toDataURL(qr);
         }
       }
     );

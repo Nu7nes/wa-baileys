@@ -14,11 +14,26 @@ app.use(express.json());
 // Use Router
 app.use(router);
 
-// BaileysService
-const baileysService = BaileysService.getInstance();
-baileysService.setOnMessageReceived((data) => {
-  N8NService.sendWebhook(data);
+app.get("/qr", async (req, res) => {
+  const baileysService = await BaileysService.getInstance();
+  baileysService.setOnMessageReceived((data) => {
+    N8NService.sendWebhook(data);
+  });
+  if (baileysService.qrImageData) {
+    res.send(`
+      <html>
+        <body>
+          <h1>Escaneie o QR Code com o WhatsApp</h1>
+          <img src="${baileysService.qrImageData}" />
+        </body>
+      </html>
+    `);
+  } else {
+    res.send("QR Code não disponível no momento.");
+  }
 });
+
+// BaileysService
 
 // Logs com Morgan
 app.use(morgan("dev"));
