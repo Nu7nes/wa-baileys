@@ -7,8 +7,8 @@ services:
     container_name: api-container
     ports:
       - "4100:4100"
-    depends_on:
-      - postgres
+    # depends_on:
+    #   - postgres
     environment:
       - POSTGRES_DB=nunes
       - POSTGRES_USER=admin
