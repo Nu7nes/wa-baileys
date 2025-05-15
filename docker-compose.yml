@@ -10,7 +10,7 @@ services:
     # depends_on:
     #   - postgres
     environment:
-      - POSTGRES_DB=nunes
+      - POSTGRES_DB=n8n
       - POSTGRES_USER=n8n
       - POSTGRES_PASSWORD=n8n123
       - POSTGRES_HOST=postgres
