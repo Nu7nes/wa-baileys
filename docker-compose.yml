@@ -1,0 +1,43 @@
+version: '3.8'
+
+services:
+  api:
+    build:
+      context: .
+    container_name: api-container
+    ports:
+      - "4100:4100"
+    depends_on:
+      - db
+    environment:
+      - POSTGRES_DB=nunes
+      - POSTGRES_USER=admin
+      - POSTGRES_PASSWORD=Bnunes@123
+      - POSTGRES_HOST=localhost
+      - POSTGRES_PORT=5432
+      - POSTGRES_WA_TABLE=wa_auth_state
+      - N8N_WEBHOOK_UR=http://localhost:5678/webhook-test/wpp-message
+      - N8N_WEBHOOK_URL_TEST=http://localhost:5678/webhook/wpp-message
+    networks:
+      - n8n-stack_default
+    restart: unless-stopped
+
+  db:
+    image: postgres:15
+    container_name: postgres-db
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: admin
+      POSTGRES_PASSWORD: Bnunes@123
+      POSTGRES_DB: nunes
+    volumes:
+      - db_data:/var/lib/postgresql/data
+    networks:
+      - n8n-stack_default
+
+volumes:
+  db_data:
+
+networks:
+  n8n-stack_default:
+    external: true
