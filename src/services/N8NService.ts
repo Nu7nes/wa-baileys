@@ -1,7 +1,7 @@
 import axios from "axios";
 
 class N8NService {
-  private static url = process.env.N8N_WEBHOOK_UR;
+  private static url = process.env.N8N_WEBHOOK_URL;
   private static url_test = process.env.N8N_WEBHOOK_UR_TEST;
 
   public static async sendWebhook(data: any) {
